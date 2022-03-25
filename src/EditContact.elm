@@ -7,7 +7,7 @@ import Html exposing (..)
 viewForm : Model -> Html Msg
 viewForm model = 
     Html.form 
-        [ onSubmit T.SaveContact, class "flex flex-col bg-white shadow-md rounded-md w-full max-w-md" ] [
+        [ class "flex flex-col bg-white shadow-md rounded-md w-full max-w-md" ] [
               viewHead model
             , viewFormContact model.currentContact
             , Html.div [class "flex justify-around bg-white py-2.5"] [
@@ -75,10 +75,9 @@ viewFavorite contact =
     label [class "flex items-center cursor-pointer relative mb-4"] [
         button
             [ class ("h-4 w-4 rounded-full border border-gray-500" ++ if contact.isFavorite then " bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700" else " bg-gradient-to-r from-gray-200 to-gray-300")
-            , type_ "submit"
             , id "toggle-example"
             , checked False
-            , onClick T.FavoriteChanged
+            , onClick T.FavoriteChangedOnEdit
             ] []
         , span [class "ml-3 text-gray-700 text-sm"] [text "Favorite contact"]
     ]

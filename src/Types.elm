@@ -18,7 +18,8 @@ type Msg
   = NameChanged String
   | EmailChanged String
   | PhoneNumberChanged String
-  | FavoriteChanged
+  | FavoriteChangedOnEdit
+  | FavoriteChangedOnSidebar Contact
   | SaveContact
   | ClickDetailContact Contact
   | SetEditMode Bool

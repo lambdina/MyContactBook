@@ -13,6 +13,11 @@ import EditContact exposing (viewForm)
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
   case msg of
+    T.SaveContact -> --Faire une fonction updateOrAppend pour allContacts.
+      ( {model | currentContact = setContactId model.currentContact
+                , allContacts = updateOrAppend model.currentContact model.allContacts
+                , editingMode = False }
+      , Cmd.none)
     T.NameChanged name ->
       ( {model | currentContact = setName name model.currentContact}
       , Cmd.none
@@ -26,15 +31,12 @@ update msg model =
         ( {model | currentContact = setPhoneNumber phoneNumber model.currentContact}
         , Cmd.none
         )
-    T.FavoriteChanged ->
-      ( {model | currentContact = setFavorite model.currentContact}
+    T.FavoriteChangedOnEdit -> --je remplace currentContact alors que parfois je le change dans la side bar. Ce sont deux évènements différents
+      ( {model | currentContact = setFavorite model.currentContact }
       , Cmd.none)
-    T.SaveContact ->
-        ( {model | currentContact = setContactId model.currentContact
-                 , allContacts = unique (model.currentContact :: model.allContacts)
-                 , editingMode = False }
-        , Cmd.none
-        )
+    T.FavoriteChangedOnSidebar contact ->
+      ( {model | allContacts = updateOrAppend (setFavorite contact) model.allContacts }
+      , Cmd.none )
     T.ClickDetailContact contact ->
       ( {model | currentContact = contact, editingMode = False}
       , Cmd.none)
@@ -42,16 +44,14 @@ update msg model =
       ( {model | editingMode = bool}
       , Cmd.none)
 
-unique : List a -> List a
-unique l = 
-    let
-        incUnique : a -> List a -> List a
-        incUnique elem lst = 
-            case List.member elem lst of
-                True -> lst
-                False -> elem :: lst
-    in
-        List.foldr incUnique [] l
+isSameContact : Contact -> Contact -> Bool
+isSameContact a b = a.email == b.email && a.name == b.name
+
+updateOrAppend : Contact -> List Contact -> List Contact
+updateOrAppend contact allContacts =
+    if List.filter (\x -> isSameContact x contact) allContacts == [] then
+        contact :: allContacts
+    else List.map (\x -> if isSameContact x contact then contact else x) allContacts
 
 setName : String -> Contact -> Contact
 setName name contact = {contact | name = name}
@@ -183,7 +183,7 @@ init flags =
     case D.decodeValue decoder flags of
       Ok model -> model
       Err _ -> { allContacts = []
-               , currentContact = { name = "", email = "", phoneNumber = "", isFavorite = False, contactId =""}
+               , currentContact = { name = "", email = "", phoneNumber = "", isFavorite = False, contactId = ""}
                , editingMode = True}
   ,
     Cmd.none

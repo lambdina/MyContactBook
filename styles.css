@@ -5,3 +5,7 @@
 .fa-star {
     color: rgb(147 51 234 / var(--tw-text-opacity));
 }
+
+.disabled .fa-star {
+    color: white;
+}

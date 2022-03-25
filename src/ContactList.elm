@@ -3,7 +3,13 @@ import Types as T exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
 import Html exposing (..)
-    
+  
+{-
+  TODO :
+  Be able to toggle Favorite on the contact list
+  filter by favorites
+  Search by name (not asked)
+-}
 
 viewSearchBar : Model -> Html Msg
 viewSearchBar model =
@@ -29,22 +35,21 @@ viewContactList model =
 viewContactCard : Contact -> Html Msg
 viewContactCard contact =
   li [ class "py-3 sm:py-4 hover:bg-gray-100"] [
-      button
+      div
         [ class "flex items-center space-x-4"
-        , onClick (T.ClickDetailContact contact)
         , value contact.contactId ]
-          [ div [ class "flex-shrink-0" ] [
-            img [ class "w-8 h-8 rounded-full", src "https://oahurcd.org/wp-content/uploads/2021/12/profile-avatar.jpg" ] []
+          [ button
+            [ class "flex-shrink-0"
+            , onClick (T.ClickDetailContact contact) ] [
+              img [ class "w-8 h-8 rounded-full", src "https://oahurcd.org/wp-content/uploads/2021/12/profile-avatar.jpg" ] []
           ]
-        , div [ class "flex-1 min-w-0" ]
+        , button [ class "flex-1 min-w-0"
+              , onClick (T.ClickDetailContact contact)]
             [ p [ class "text-sm font-medium text-gray-900 truncate dark:text-white" ] [ text contact.name ]
             , p [ class "text-sm text-gray-500 truncate dark:text-gray-400" ] [ text contact.email ] ]
-            , if contact.isFavorite then div [ class "inline-flex items-center text-base font-semibold text-gray-900 dark:text-white" ]
-                [ viewFavoriteIcon ]
-              else div [] []
+            , div [ class "inline-flex items-center text-base font-semibold text-gray-900 dark:text-white" ]
+                [ i [ if contact.isFavorite then (class "fa fa-star ") else (class "fa fa-star-o")
+                    , onClick (T.FavoriteChangedOnSidebar contact) ] []
+                ]
         ]
   ]
-
-viewFavoriteIcon : Html Msg
-viewFavoriteIcon = 
-  i [ class "fa fa-star" ] []
