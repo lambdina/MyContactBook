@@ -7,11 +7,12 @@ import Html exposing (..)
 viewForm : Model -> Html Msg
 viewForm model = 
     Html.form 
-        [ class "flex flex-col bg-white shadow-md rounded-md w-full max-w-md" ] [
+        [ class "flex flex-col bg-white shadow-md rounded-md w-full max-w-md"
+        , onSubmit T.SaveContact ] [
               viewHead model
             , viewFormContact model.currentContact
             , Html.div [class "flex justify-around bg-white py-2.5"] [
-                button [onClick T.SaveContact, type_ "submit", class "px-8 text-purple-600 hover:bg-purple-100 text-lg rounded-full focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"]
+                button [type_ "submit", class "px-8 text-purple-600 hover:bg-purple-100 text-lg rounded-full focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"]
                   [text "Save"]
             ]
         ]
@@ -73,7 +74,7 @@ viewFormContact contact =
 viewFavorite : Contact -> Html Msg
 viewFavorite contact =
     label [class "flex items-center cursor-pointer relative mb-4"] [
-        button
+        div
             [ class ("h-4 w-4 rounded-full border border-gray-500" ++ if contact.isFavorite then " bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700" else " bg-gradient-to-r from-gray-200 to-gray-300")
             , id "toggle-example"
             , checked False

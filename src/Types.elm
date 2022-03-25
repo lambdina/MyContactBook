@@ -22,4 +22,4 @@ type Msg
   | FavoriteChangedOnSidebar Contact
   | SaveContact
   | ClickDetailContact Contact
-  | SetEditMode Bool
+  | SetEditMode

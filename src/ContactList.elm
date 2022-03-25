@@ -6,7 +6,6 @@ import Html exposing (..)
   
 {-
   TODO :
-  Be able to toggle Favorite on the contact list
   filter by favorites
   Search by name (not asked)
 -}

@@ -40,8 +40,8 @@ update msg model =
     T.ClickDetailContact contact ->
       ( {model | currentContact = contact, editingMode = False}
       , Cmd.none)
-    T.SetEditMode bool ->
-      ( {model | editingMode = bool}
+    T.SetEditMode ->
+      ( {model | editingMode = not model.editingMode}
       , Cmd.none)
 
 isSameContact : Contact -> Contact -> Bool
@@ -88,7 +88,7 @@ viewContact contact =
         Html.div [ class "max-w-sm mx-auto md:w-full md:mx-0" ] [
           button
             [ class "text-purple-600 font-medium text-sm"
-            , onClick (T.SetEditMode True) ] [ text "Edit" ],
+            , onClick (T.SetEditMode ) ] [ text "Edit" ],
           Html.div [ class "grid grid-cols-1 place-items-center space-y-4" ] [
             Html.img [alt "profile", src "https://oahurcd.org/wp-content/uploads/2021/12/profile-avatar.jpg", class "mx-auto object-cover rounded-full h-20 w-20"] [],
             div [ class "flex" ] [
