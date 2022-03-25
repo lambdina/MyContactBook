@@ -216,7 +216,7 @@ viewContactCard model contact =
 
 viewFavoriteIcon : Html Msg
 viewFavoriteIcon = 
-  i [ class "fa-solid fa-star-sharp" ] []
+  i [ class "fa fa-star" ] []
 
 getName : Contact -> String
 getName contact = contact.name

@@ -2,6 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-.fa-star-sharp {
-    color: rgb(88 28 135 / var(--tw-bg-opacity));
+.fa-star {
+    color: rgb(147 51 234 / var(--tw-text-opacity));
 }
