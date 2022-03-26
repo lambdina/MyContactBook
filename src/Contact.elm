@@ -52,11 +52,15 @@ isSameContact : Contact -> Contact -> Bool
 isSameContact a b = a.email == b.email && a.name == b.name
 
 updateOrAppend : Contact -> List Contact -> List Contact
-updateOrAppend contact allContacts =
+updateOrAppend contact allContacts = List.sortBy .name (updateOrAppend_ contact allContacts)
+
+
+updateOrAppend_ : Contact -> List Contact -> List Contact
+updateOrAppend_ contact allContacts =
     if List.filter (\x -> isSameContact x contact) allContacts == [] then
         contact :: allContacts
     else List.map (\x -> if isSameContact x contact then contact else x) allContacts
-
+  
 setName : String -> Contact -> Contact
 setName name contact = {contact | name = name}
 

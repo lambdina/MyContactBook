@@ -4,13 +4,6 @@ import Html.Attributes exposing (..)
 import Html.Events exposing (..)
 import Html exposing (..)
 import Utils exposing (tab)
-  
-{-
-  TODO :
-  filter by favorites
-  sort by alphabet
-  Search by name (not asked)
--}
 
 viewSearchBar : Model -> Html Msg
 viewSearchBar model =
