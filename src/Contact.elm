@@ -7,10 +7,13 @@ import Html.Events exposing (..)
 import Html exposing (..)
 import Json.Decode as D
 import Json.Encode as E
-import ContactList exposing (viewContactList)
+import Sidebar exposing (viewContactList)
 import EditContact exposing (viewForm)
 import Validate exposing (isValidEmail)
 import Utils exposing (isValidPhoneNumber)
+
+-- TODO new contact Button LOL
+-- TODO mobile friendly hidden div
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
@@ -20,9 +23,12 @@ update msg model =
         ( model, Cmd.none )
       else
         ( {model | currentContact = setContactId model.currentContact
-                , allContacts = updateOrAppend model.currentContact model.allContacts
-                , editingMode = False }
+                 , allContacts = updateOrAppend model.currentContact model.allContacts
+                 , editingMode = False }
         , Cmd.none)
+    T.NewForm ->
+      ( {model | editingMode = True, currentContact = Contact "" "" "" False ""}
+      , Cmd.none )
     T.NameChanged name ->
       ( {model | currentContact = setName name model.currentContact}
       , Cmd.none)

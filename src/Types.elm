@@ -24,6 +24,7 @@ type Msg
   | FavoriteChangedOnEdit
   | FavoriteChangedOnSidebar Contact
   | SaveContact
+  | NewForm
   | ClickDetailContact Contact
   | SetEditMode
   | FilterByFavoriteMode

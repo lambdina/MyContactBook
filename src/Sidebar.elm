@@ -1,4 +1,4 @@
-module ContactList exposing (viewContactList)
+module Sidebar exposing (viewContactList)
 import Types as T exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
@@ -7,22 +7,29 @@ import Utils exposing (tab)
 
 viewSearchBar : Model -> Html Msg
 viewSearchBar model =
-  div [class "relative w-full group space-y-4"]
-    [ h5 [ class "text-xl font-bold leading-none text-gray-900 dark:text-white" ]
+  div [class "relative w-full group space-y-4"] [
+    div [ class "flex justify-between items-center mb-4" ] [
+      h5 [ class "text-xl font-bold leading-none text-gray-900 dark:text-white" ]
         [ text "All Contacts" ],
-      div [ class "grid text-gray-500 border-b border-gray-200 dark:text-gray-400 dark:border-gray-700" ] [
-        ul [ class "flex" ] [ 
-          tab (not model.filterByFavorites) "All contacts",
-          tab (model.filterByFavorites) "Only favorites"
-        ]
+      button
+        [ class "text-sm font-medium text-purple-600 hover:underline dark:text-purple-500"
+        , type_ "submit"
+        , onClick T.NewForm ]
+        [ text "New" ]
+    ],
+    div [ class "grid text-gray-500 border-b border-gray-200 dark:text-gray-400 dark:border-gray-700" ] [
+      ul [ class "flex" ] [ 
+        tab (not model.filterByFavorites) "All contacts",
+        tab (model.filterByFavorites) "Only favorites"
       ]
+    ]
   ] --TODO search bar
 
 viewContactList : Model -> Html Msg
 viewContactList model =
-  div [ class "h-screen border border-gray-200 w-1/4 bg-white sm:p-8 dark:bg-gray-800 dark:border-gray-700" ] [
+  aside [ class "min-w-max h-screen border border-gray-200 bg-white sm:p-8 dark:bg-gray-800 dark:border-gray-700" ] [
       viewSearchBar model
-    , div [ class "flow-root" ] [
+    , div [ class "flow-root overflow-y-auto" ] [
         ul [ class "divide-y-2 divide-gray-200 dark:divide-gray-700"]
         (case model.filterByFavorites of
             False -> (List.map (\contact -> viewContactCard contact) model.allContacts)
@@ -35,7 +42,7 @@ viewContactCard : Contact -> Html Msg
 viewContactCard contact =
   li [ class "py-3 sm:py-4 hover:bg-gray-100"] [
       div
-        [ class "flex items-center space-x-4"
+        [ class "flex space-x-4"
         , value contact.contactId ]
           [ button
             [ class "flex-shrink-0"
