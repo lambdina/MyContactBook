@@ -7,6 +7,7 @@ import Html exposing (..)
 {-
   TODO :
   filter by favorites
+  sort by alphabet
   Search by name (not asked)
 -}
 

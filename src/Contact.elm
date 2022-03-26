@@ -20,22 +20,18 @@ update msg model =
       , Cmd.none)
     T.NameChanged name ->
       ( {model | currentContact = setName name model.currentContact}
-      , Cmd.none
-      )
-
+      , Cmd.none)
     T.EmailChanged email ->
       ( {model | currentContact = setEmail email model.currentContact}
-      , Cmd.none
-      )
+      , Cmd.none)
     T.PhoneNumberChanged phoneNumber ->
         ( {model | currentContact = setPhoneNumber phoneNumber model.currentContact}
-        , Cmd.none
-        )
-    T.FavoriteChangedOnEdit -> --je remplace currentContact alors que parfois je le change dans la side bar. Ce sont deux évènements différents
+        , Cmd.none)
+    T.FavoriteChangedOnEdit ->
       ( {model | currentContact = setFavorite model.currentContact }
       , Cmd.none)
     T.FavoriteChangedOnSidebar contact ->
-      ( {model | allContacts = updateOrAppend (setFavorite contact) model.allContacts }
+      ( updateFavoriteOnSidebar contact model
       , Cmd.none )
     T.ClickDetailContact contact ->
       ( {model | currentContact = contact, editingMode = False}
@@ -43,6 +39,11 @@ update msg model =
     T.SetEditMode ->
       ( {model | editingMode = not model.editingMode}
       , Cmd.none)
+
+updateFavoriteOnSidebar : Contact -> Model -> Model
+updateFavoriteOnSidebar updatedContact model =
+  {model | allContacts = updateOrAppend (setFavorite updatedContact) model.allContacts
+         , currentContact = if model.editingMode then model.currentContact else (setFavorite updatedContact)}
 
 isSameContact : Contact -> Contact -> Bool
 isSameContact a b = a.email == b.email && a.name == b.name
