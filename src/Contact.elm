@@ -9,23 +9,28 @@ import Json.Decode as D
 import Json.Encode as E
 import ContactList exposing (viewContactList)
 import EditContact exposing (viewForm)
+import Validate exposing (isValidEmail)
+import Utils exposing (isValidPhoneNumber)
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
   case msg of
-    T.SaveContact -> --Faire une fonction updateOrAppend pour allContacts.
-      ( {model | currentContact = setContactId model.currentContact
+    T.SaveContact ->
+      if not model.emailIsValid || not model.phoneNumberIsValid then
+        ( model, Cmd.none )
+      else
+        ( {model | currentContact = setContactId model.currentContact
                 , allContacts = updateOrAppend model.currentContact model.allContacts
                 , editingMode = False }
-      , Cmd.none)
+        , Cmd.none)
     T.NameChanged name ->
       ( {model | currentContact = setName name model.currentContact}
       , Cmd.none)
     T.EmailChanged email ->
-      ( {model | currentContact = setEmail email model.currentContact}
+      ( {model | currentContact = setEmail email model.currentContact, emailIsValid = isValidEmail email}
       , Cmd.none)
     T.PhoneNumberChanged phoneNumber ->
-        ( {model | currentContact = setPhoneNumber phoneNumber model.currentContact}
+        ( {model | currentContact = setPhoneNumber phoneNumber model.currentContact, phoneNumberIsValid = isValidPhoneNumber phoneNumber}
         , Cmd.none)
     T.FavoriteChangedOnEdit ->
       ( {model | currentContact = setFavorite model.currentContact }
@@ -168,6 +173,7 @@ encode : Model -> E.Value
 encode model = E.object
     [ ("currentContact", (encodeSingleContact model.currentContact))
     , ("allContacts", E.list (\x -> encodeSingleContact x) model.allContacts)
+    , ("editingMode", E.bool model.editingMode)
     ]
 
 decoder : D.Decoder Model
@@ -175,8 +181,10 @@ decoder =
   D.succeed Model
     |> D.required "currentContact" decodeContact
     |> D.required "allContacts" (D.list decodeContact)
-    |> D.hardcoded True
+    |> D.required "editingMode" D.bool
     |> D.hardcoded False
+    |> D.hardcoded True
+    |> D.hardcoded True
 
 decodeContact : D.Decoder Contact
 decodeContact = D.map5 Contact
@@ -194,7 +202,9 @@ init flags =
       Err _ -> { allContacts = []
                , currentContact = { name = "", email = "", phoneNumber = "", isFavorite = False, contactId = ""}
                , editingMode = True
-               , filterByFavorites = False}
+               , filterByFavorites = False
+               , emailIsValid = True
+               , phoneNumberIsValid = True}
   ,
     Cmd.none
   )

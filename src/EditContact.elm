@@ -11,6 +11,12 @@ viewForm model =
         [ class "flex flex-col bg-white shadow-md rounded-md w-full max-w-md"
         , onSubmit T.SaveContact ] [
               viewHead model
+            , case (viewAlertError model.emailIsValid "Please retry with a valid email.") of
+                Nothing -> div [] []
+                Just alert -> alert
+            , case (viewAlertError model.phoneNumberIsValid "Your phone number should only contain digits.") of
+                Nothing -> div [] []
+                Just alert -> alert
             , viewFormContact model.currentContact
             , Html.div [class "flex justify-around bg-white py-2.5"] [
                 button [type_ "submit", class "px-8 text-purple-600 hover:bg-purple-100 text-lg rounded-full focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"]
@@ -39,7 +45,7 @@ viewInputField label input_ =
 
 viewFormContact : Contact -> Html Msg
 viewFormContact contact =
-    Html.div [class "space-y-6 bg-white divide-y-2"] [
+    Html.div [class "pt-6 space-y-6 bg-white divide-y-2"] [
         Html.div [class "px-12"] [
           viewInputField "Name"
             (input
@@ -49,7 +55,7 @@ viewFormContact contact =
             , onInput T.NameChanged
             , value contact.name
             , required True ] [])
-            , viewInputField "Email"
+          , viewInputField "Email"
             (input
             [ class "block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-purple-500 focus:outline-none focus:ring-0 focus:border-purple-500 peer"
             , type_ "text"
@@ -58,6 +64,7 @@ viewFormContact contact =
             , value contact.email
             , required True ] [])
         ]
+
         ,div [ class "text-gray-900 py-4 px-12" ] [
           Html.div [class "py-4 grid"] [
               viewFavorite contact
@@ -71,6 +78,19 @@ viewFormContact contact =
             ]
           ]
     ]
+
+viewAlertError : Bool -> String -> Maybe (Html Msg)
+viewAlertError isValidField alertMsg =
+  if isValidField then Nothing
+  else
+    Just (
+        div [ class "flex mx-12 p-2.5 mb-2 bg-red-100 border-t-2 text-xs text-red-700 border-red-500 dark:bg-red-200"
+            , id "alert-border-2"]
+          [ span
+            [ class "font-medium" ]
+            [ text alertMsg ]
+          ]
+    )
 
 viewFavorite : Contact -> Html Msg
 viewFavorite contact =

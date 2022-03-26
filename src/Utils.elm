@@ -3,6 +3,7 @@ import Types exposing (..)
 import Html.Attributes exposing (action, checked, class, id)
 import Html.Events exposing (..)
 import Html exposing (..)
+import Validate exposing (isInt)
 
 checkBox : Msg -> Bool -> String -> Html Msg
 checkBox action isChecked title =
@@ -26,4 +27,11 @@ tab isCurrent title =
             False ->
                 (p [ class (" text-xs inline-block p-4 rounded-t-lg border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300")
                     , onClick FilterByFavoriteMode ] [ text title ])
-        ]     
+        ]
+
+isValidPhoneNumber : String -> Bool
+isValidPhoneNumber phoneNumber =
+    if phoneNumber == "" then True
+    else
+        (if String.startsWith "+" phoneNumber then isInt (String.dropLeft 1 phoneNumber)
+        else isInt phoneNumber)

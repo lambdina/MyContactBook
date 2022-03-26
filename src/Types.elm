@@ -13,7 +13,9 @@ type alias Model =
     { currentContact : Contact
     , allContacts : List Contact
     , editingMode : Bool
-    , filterByFavorites : Bool}
+    , filterByFavorites : Bool
+    , emailIsValid : Bool
+    , phoneNumberIsValid : Bool}
 
 type Msg
   = NameChanged String
