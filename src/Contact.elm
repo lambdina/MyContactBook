@@ -39,6 +39,9 @@ update msg model =
     T.SetEditMode ->
       ( {model | editingMode = not model.editingMode}
       , Cmd.none)
+    T.FilterByFavoriteMode ->
+      ( {model | filterByFavorites = not model.filterByFavorites}
+      , Cmd.none)
 
 updateFavoriteOnSidebar : Contact -> Model -> Model
 updateFavoriteOnSidebar updatedContact model =
@@ -169,6 +172,7 @@ decoder =
     |> D.required "currentContact" decodeContact
     |> D.required "allContacts" (D.list decodeContact)
     |> D.hardcoded True
+    |> D.hardcoded False
 
 decodeContact : D.Decoder Contact
 decodeContact = D.map5 Contact
@@ -185,7 +189,8 @@ init flags =
       Ok model -> model
       Err _ -> { allContacts = []
                , currentContact = { name = "", email = "", phoneNumber = "", isFavorite = False, contactId = ""}
-               , editingMode = True}
+               , editingMode = True
+               , filterByFavorites = False}
   ,
     Cmd.none
   )

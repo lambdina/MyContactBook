@@ -12,7 +12,8 @@ type alias Contact =
 type alias Model =
     { currentContact : Contact
     , allContacts : List Contact
-    , editingMode : Bool}
+    , editingMode : Bool
+    , filterByFavorites : Bool}
 
 type Msg
   = NameChanged String
@@ -23,3 +24,4 @@ type Msg
   | SaveContact
   | ClickDetailContact Contact
   | SetEditMode
+  | FilterByFavoriteMode

@@ -3,6 +3,7 @@ import Types as T exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
 import Html exposing (..)
+import Utils exposing (tab)
   
 {-
   TODO :
@@ -13,13 +14,15 @@ import Html exposing (..)
 
 viewSearchBar : Model -> Html Msg
 viewSearchBar model =
-  div [ class "flex justify-between items-center mb-4" ]
+  div [class "relative w-full group space-y-4"]
     [ h5 [ class "text-xl font-bold leading-none text-gray-900 dark:text-white" ]
-        [ text "All Contacts" ]
-    , button
-      [ type_ "submit"
-      , class "text-sm font-medium text-purple-600 hover:underline dark:text-purple-500"]
-      [ text "Clear" ]
+        [ text "All Contacts" ],
+      div [ class "grid text-gray-500 border-b border-gray-200 dark:text-gray-400 dark:border-gray-700" ] [
+        ul [ class "flex" ] [ 
+          tab (not model.filterByFavorites) "All contacts",
+          tab (model.filterByFavorites) "Only favorites"
+        ]
+      ]
   ] --TODO search bar
 
 viewContactList : Model -> Html Msg
@@ -28,7 +31,10 @@ viewContactList model =
       viewSearchBar model
     , div [ class "flow-root" ] [
         ul [ class "divide-y-2 divide-gray-200 dark:divide-gray-700"]
-          (List.map (\contact -> viewContactCard contact) model.allContacts)
+        (case model.filterByFavorites of
+            False -> (List.map (\contact -> viewContactCard contact) model.allContacts)
+            True -> (List.map (\contact -> viewContactCard contact) (List.filter (\contact -> contact.isFavorite) model.allContacts))
+        )
       ]
   ]
 

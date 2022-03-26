@@ -3,6 +3,7 @@ import Types as T exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
 import Html exposing (..)
+import Utils exposing (checkBox)
 
 viewForm : Model -> Html Msg
 viewForm model = 
@@ -50,7 +51,7 @@ viewFormContact contact =
             , required True ] [])
             , viewInputField "Email"
             (input
-            [ class "block py-2.5 px-2.5 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-purple-500 focus:outline-none focus:ring-0 focus:border-purple-500 peer"
+            [ class "block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-purple-500 focus:outline-none focus:ring-0 focus:border-purple-500 peer"
             , type_ "text"
             , placeholder ""
             , onInput T.EmailChanged
@@ -73,12 +74,4 @@ viewFormContact contact =
 
 viewFavorite : Contact -> Html Msg
 viewFavorite contact =
-    label [class "flex items-center cursor-pointer relative mb-4"] [
-        div
-            [ class ("h-4 w-4 rounded-full border border-gray-500" ++ if contact.isFavorite then " bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700" else " bg-gradient-to-r from-gray-200 to-gray-300")
-            , id "toggle-example"
-            , checked False
-            , onClick T.FavoriteChangedOnEdit
-            ] []
-        , span [class "ml-3 text-gray-700 text-sm"] [text "Favorite contact"]
-    ]
+  checkBox T.FavoriteChangedOnEdit contact.isFavorite "Favorite Contact"
