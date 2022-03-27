@@ -1,4 +1,4 @@
-port module Contact exposing (..)
+port module Home exposing (..)
 import Types as T exposing (..)
 import Id exposing (generateId)
 import Json.Decode.Pipeline as D
@@ -12,8 +12,6 @@ import EditContact exposing (viewForm)
 import Validate exposing (isValidEmail)
 import Utils exposing (isValidPhoneNumber)
 
--- TODO new contact Button LOL
--- TODO mobile friendly hidden div
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =

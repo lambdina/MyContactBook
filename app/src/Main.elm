@@ -1,7 +1,7 @@
 module Main exposing (..)
 
 import Browser
-import Contact exposing (init, viewRoot, updateWithStorage)
+import Home exposing (init, viewRoot, updateWithStorage)
 import Types exposing (Model, Msg)
 import Json.Encode as E
 

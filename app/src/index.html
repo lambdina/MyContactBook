@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tailwind Starter</title>
-    <link href="./styles.css" rel="stylesheet">
+    <link href="./styles/styles.css" rel="stylesheet">
     <link rel="stylesheet" href="https://intl-tel-input.com/node_modules/intl-tel-input/build/css/intlTelInput.css?37">
     <script src="https://kit.fontawesome.com/ba24aea723.js" crossorigin="anonymous"></script>
 </head>
@@ -24,8 +24,12 @@
     }
 
     delay(500).then(() => {
+        /* 
+            I have to wait a bit because by the time the page is loaded, this script is
+            executed first and it does not find the #phone section because it does not exists yet.
+            I am ashamed of this dangerous behavior but don"t know how to improve it yet.
+        */
         var phoneInput = document.querySelector("#phone");
-        console.log("phone input", phoneInput);
         window.intlTelInput(phoneInput, {utilsScript:'https://intl-tel-input.com/node_modules/intl-tel-input/build/js/utils.js'});
         window.phoneInput = phoneInput;
     });

@@ -1,4 +1,4 @@
-import { Elm } from './src/Main.elm'
+import { Elm } from './Main.elm'
 
 var storedData = localStorage.getItem('myapp-model');
 var flags = storedData ? JSON.parse(storedData) : null;
