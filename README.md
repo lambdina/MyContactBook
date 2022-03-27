@@ -1,9 +1,9 @@
 # MyContactBook
 
 ## Table of Contents
-    * [Introduction](./README.md#Introduction)
-    * [Run](./README.md#Run)
-    * [Features](./README.md#Features)
+* [Introduction](./README.md#Introduction)
+* [Run](./README.md#Run)
+* [Features](./README.md#Features)
 
 ## Introduction
 
